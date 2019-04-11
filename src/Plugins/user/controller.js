@@ -64,7 +64,7 @@ const GetUser = async (req, res) => {
             id: Joi.string().alphanum().min(24)
         }
     })
-    const result = Joi.validate({ params: req.params }, getUsersSchema)
+    const result = Joi.validate({ params: req.params }, getUsersSchema);
 
     if (result.error) {
         res.send(result.error);
@@ -82,6 +82,15 @@ const GetUser = async (req, res) => {
   */
 
 const ForgetPassword = async (req, res) => {
+    const getUsersSchema = Joi.object().keys({
+        params: {
+            id: Joi.string().alphanum().min(24)
+        }
+    })
+    const isValid = Joi.validate({ params: req.params }, getUsersSchema);
+    if (isValid.error) {
+        res.send(isValid.error);
+    }
     const user = await User.findById(req.params.id);
     if (_.isEmpty(user)) {
         res.boom.notFound("User not found...");

@@ -1,1245 +1,177 @@
-openapi: "3.0.0"
+---
+swagger: "2.0"
 info:
+  description: Application for buying and selling assets
   version: 1.0.0
-  title: Merchant Backend API
-  description: PumaPay API that allows the merchants through the Merchant Backend to create and execute crypto payments using PumaPay Pull Payment Protocol over the Ethereum network.
+  title: Trust Brix
   contact:
-    name: PumaPay Developers Team
-    email: developers@pumapay.io
-    url: https://github.com/pumapayio/wiki
-servers:
-  - url: http://localhost:4500/
-    description: Local Server
-  - url: https://prembackend.pumapay.io/
-    description: Test Server
+    email: developers@trustbrix.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: virtserver.swaggerhub.com
+tags:
+- name: Register
+  description: Registration for new user
+- name: Authentication
+  description: Authentication contains login,forget password and so on
+schemes:
+- https
 paths:
-  /books:
+  /get-user/{id}:
+    get:
+      tags:
+      - Register
+      summary: Get a user by id
+      description: |
+        Get a user by id
+      operationId: Get user
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: query
+        description: ID of user for retrive
+        required: true
+      responses:
+        200:
+          description: Search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/UserItem'
+        400:
+          description: bad input parameter
+  /register:
     post:
       tags:
-        - Billing Model
-      summary: 'Creates a new billing model'
-      parameters: []
-      description: 'Creates a new billing model in the merchant database'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              $ref: '#/components/schemas/BillingModelRequest'
-      responses:
-        '200':
-          description: Returns the newly created billing model
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        $ref: '#/components/schemas/BillingModel'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-
-    get:
-      tags:
-        - Billing Model
-      summary: 'Retrieve all the billing models'
-      parameters: []
-      description: 'Retrieve all the billing models that exists in the merchant database'
-      responses:
-        '200':
-          description: Returns all the billing models
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          type: object
-                          $ref: '#/components/schemas/BillingModel'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-
-  /api/v2/pull-payment-models/{BillingModelID}:
-    get:
-      tags:
-        - Billing Model
-      summary: 'Retrieve the billing models by billing model ID'
+      - Register
+      summary: Create a new user
+      description: To create a new user
+      operationId: register the user
+      produces:
+      - application/json
       parameters:
-        - in: path
-          name: BillingModelID
-          schema:
-            type: string
-          required: true
-          description: ID of the billing model to retrieve
-      description: 'Retrieve the billing models by ID that exists in the merchant database'
+      - in: body
+        name: login items
+        description: username and password for login
+        required: false
+        schema:
+          $ref: '#/definitions/InventoryItem'
       responses:
-        '200':
-          description: Returns the billing model by ID
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        $ref: '#/components/schemas/BillingModel'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-    put:
-      tags:
-        - Billing Model
-      summary: 'Updates the billing models by billing model ID'
-      parameters:
-        - in: path
-          name: BillingModelID
+        200:
+          description: Search results matching criteria
           schema:
-            type: string
-          required: true
-          description: ID of the billing model to update
-      description: 'Updates the billing models by ID that exists in the merchant database'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              $ref: '#/components/schemas/BillingModelNoMerchant'
-      responses:
-        '200':
-          description: Returns the billing model by ID
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        $ref: '#/components/schemas/BillingModel'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-    patch:
-      tags:
-        - Billing Model
-      summary: 'Updates the billing models by billing model ID'
-      parameters:
-        - in: path
-          name: BillingModelID
-          schema:
-            type: string
-          required: true
-          description: ID of the billing model to update
-      description: 'Updates the billing models by ID that exists in the merchant database'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              $ref: '#/components/schemas/BillingModelNoMerchantPatch'
-      responses:
-        '200':
-          description: Returns the billing model by ID
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        $ref: '#/components/schemas/BillingModel'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-    delete:
-      tags:
-        - Billing Model
-      summary: 'Deletes a billing model'
-      parameters:
-        - in: path
-          name: BillingModelID
-          schema:
-            type: string
-          required: true
-          description: ID of the billing model to delete
-      description: 'Deletes a billing model from the merchant database'
-      responses:
-        '200':
-          description: Deletes a billing model from the merchant database
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-  /api/v2/pull-payments/:
+            type: array
+            items:
+              $ref: '#/definitions/UserItem'
+        400:
+          description: bad input parameter
+  /login:
     post:
       tags:
-        - Pull Payments
-      summary: 'Creates a new pull payment'
-      parameters: []
-      description: 'Creates a new pull payment in the merchant database'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              $ref: '#/components/schemas/PullPaymentRequest'
-      responses:
-        '200':
-          description: Returns the newly created pull payment
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        $ref: '#/components/schemas/PullPayment'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-    get:
-      tags:
-        - Pull Payments
-      summary: 'Retrieve all the pull payments'
-      parameters: []
-      responses:
-        '200':
-          description: Returns all the pull payments from the merchant DB
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          type: object
-                          $ref: '#/components/schemas/PullPayment'
-        '400':
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorHttpResponse'
-  /api/v2/pull-payments/{PullPaymentID}:
-    get:
-      tags:
-        - Pull Payments
-      summary: 'Retrieve the pull payment by pull payment ID'
+      - Authentication
+      summary: Login
+      description: To authenticate the user
+      consumes:
+      - application/json
+      produces:
+      - application/json
       parameters:
-        - in: path
-          name: PullPaymentID
-          schema:
-            type: string
-          required: true
-          description: ID of the pull payment to retrieve
-      description: 'Retrieve the pull payment by ID that exists in the merchant database'
+      - in: body
+        name: login items
+        description: username and password for login
+        required: false
+        schema:
+          $ref: '#/definitions/InventoryItem'
       responses:
-        '200':
-          description: Returns the payment by ID
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        $ref: '#/components/schemas/PullPayment'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-    delete:
-      tags:
-        - Pull Payments
-      summary: 'Deletes a pull payment'
-      parameters:
-        - in: path
-          name: PullPaymentID
-          schema:
-            type: string
-          required: true
-          description: ID of the pull payment to delete
-      description: 'Deletes a pull payment from the merchant database'
-      responses:
-        '200':
-          description: Deletes a pull payment from the merchant database
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-  /api/v2/transactions/:
-    post:
-      tags:
-        - Blockhain Transactions
-      security:
-        - ApiKey: []
-      summary: 'Creates a new transaction for a pull payment'
-      parameters: []
-      description: 'Creates a new transaction for a pull payment in the merchant database'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              $ref: '#/components/schemas/TransactionRequest'
-      responses:
-        '200':
-          description: Returns the newly created transaction
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          type: object
-                          $ref: '#/components/schemas/TransactionResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-  /api/v2/transactions/{transactionHash}:
-    get:
-      tags:
-        - Blockhain Transactions
-      security:
-        - TokenAuth: []
-      summary: 'Retrieve the transaction by transaction hash'
-      parameters:
-        - in: path
-          name: transactionHash
-          schema:
-            type: string
-          required: true
-          description: Transaction Hash from the ethereum network
-      description: 'Retrieve a transaction by transaction hash from the merchant DB'
-      responses:
-        '200':
-          description: Returns a transaction by transaction hash
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        $ref: '#/components/schemas/Transaction'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-  /api/v2/transactions/{pullPaymentID}:
-    get:
-      tags:
-        - Blockhain Transactions
-      security:
-        - TokenAuth: []
-      summary: 'Retrieve all the transactions for a pull payment'
-      parameters:
-        - in: path
-          name: pullPaymentID
-          schema:
-            type: string
-          required: true
-          description: ID of the Pull Payment the transactions are related with
-      description: 'Retrieve all the transactions for a pull payment from the merchant DB'
-      responses:
-        '200':
-          description: Returns all the transactions for a pull payment
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        $ref: '#/components/schemas/Transaction'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-  /api/v2/qr/{BillingModelID}:
-    get:
-      tags:
-        - QR Payload
-      security:
-        - TokenAuth: []
-      summary: 'Returns the QR payload that needs to be injected in the UI'
-      parameters:
-        - in: path
-          name: BillingModelID
-          schema:
-            type: string
-          required: true
-          description: ID of the billing model related
-      responses:
-        '200':
-          description: Returns the QR payload of a billing model
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessHttpResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        $ref: '#/components/schemas/QrPayload'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ErrorHttpResponse'
-                  - type: object
-                    properties:
-                      error:
-                        type: string
-  /api/v2/test/start-scheduler/:
-    post:
-      tags:
-        - Scheduler
-      summary: 'Starts the scheduler for a specific payment'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                paymentID:
-                  type: string
-                  example: 4a17335e-bf18-11e8-a355-000000fb1459
-                  format: uuid
-                  description: Payment ID of the payment linked with the scheduler that needs to be started
-      responses:
-        '200':
-          description: Starts the scheduler linked with the provided payment ID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessHttpResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorHttpResponse'
-  /api/v2/scheduler/stop:
-    post:
-      tags:
-        - Scheduler
-      summary: 'Stops the scheduler for a specific payment'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                paymentID:
-                  type: string
-                  example: 4a17335e-bf18-11e8-a355-000000fb1459
-                  format: uuid
-                  description: Payment ID of the payment linked with the scheduler that needs to be stopped
-      responses:
-        '200':
-          description: Stops the scheduler linked with the provided payment ID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessHttpResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorHttpResponse'
-  /api/v2/scheduler/restart:
-    post:
-      tags:
-        - Scheduler
-      summary: 'Restarts the scheduler for a specific payment'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                paymentID:
-                  type: string
-                  example: 4a17335e-bf18-11e8-a355-000000fb1459
-                  format: uuid
-                  description: Payment ID of the payment linked with the scheduler that needs to be restarted
-      responses:
-        '200':
-          description: Restarts the scheduler linked with the provided payment ID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessHttpResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorHttpResponse'
-components:
- securitySchemes:
-    TokenAuth:
-      type: apiKey
-      in: header
-      name: fcm-mobile-token
-    ApiKey:
-      description: 'Api Key'
-      type: 'apiKey'
-      in: 'header'
-      name: 'pma-api-key'
- schemas:
-    SuccessHttpResponse:
-      description: Every API succesfull request is returned in the following format
-      required:
-        - code
-        - success
-        - message
-        - data
-      properties:
-        code:
-          type: integer
-          description: 'Response Code'
-          example: 200
-        success:
-          type: boolean
-          description: 'Whethere the request is succefull'
-          example: true
-        message:
-          type: string
-          description: 'Descriptive response message'
-          example: 'Billing model details retrieved successfully'
-        data:
-          type: object
-          description: 'The data object depends on the API'
-    ErrorHttpResponse:
-      description: Every API failed request is returned in the following format
-      required:
-        - code
-        - success
-        - message
-        - error
-      properties:
-        code:
-          type: integer
-          description: 'Response Code'
-          example: 400
-        success:
-          type: boolean
-          description: 'Whethere the request is succefull'
-          example: false
-        message:
-          type: string
-          description: 'Descriptive response message'
-          example: 'Failed to retrieve Billing model details'
-        error:
-          type: string
-          description: 'The error message depends on the API'
-    BillingModel:
-      type: object
-      description: Billing Model describes the payment details. A merchant can have multiple billing models. For exmample, an online magazine can have a monthly plan which gives access to the customer to certain magazines and it also has billing models for one-time purchase of a magazine.
-      required:
-        - id
-        - merchantID
-        - title
-        - description
-        - amount
-        - initialPaymentAmount
-        - trialPeriod
-        - currency
-        - numberOfPayments
-        - typeID
-        - frequency
-        - networkID
-        - automatedCashOut
-        - cashOutFrequency
-      properties:
-        id:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-000000fb1459
-          format: uuid
-          description: Auto-generated ID for the billing model
-        merchantID:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-111111fb1459
-          format: uuid
-          description: Merchant ID as specified by the merchant. It is recommended to be UUID
-        title:
-          type: string
-          format: text
-          example: National Cryptographic Gold Mebmership
-          description: Title of the billing model
-        description:
-          type: string
-          format: text
-          example: Access to all gold articles
-          description: Description of the billing model
-        amount:
-          type: integer
-          example: 1099
-          format: cents
-          description: Cost of the payment in cents (1099 => 10.99)
-        initialPaymentAmount:
-          type: integer
-          example: 199
-          format: cents
-          description: Cost of the payment in cents (199 => 1.99) - Set to zero if no intial fees are required for the payment
-        trialPeriod:
-          type: integer
-          format: seconds
-          example: 86400
-          description: Trial period for the subscription in seconds (86400 => 1 day) - Set to zero if the payment has no trial period
-        currency:
-          type: string
-          example: USD
-          format: text
-          description: Currency the merchant is using specified in 3-letter abbriviation - USD, EUR, GBP etc
-        numberOfPayments:
-          type: integer
-          example: 12
-          format: integer
-          description: Number of payments that the merchant will be allowed to pull from the customer's wallet
-        typeID:
-          type: integer
-          enum: [push = 1, singlePull = 2, recurringPull = 3, recurringWithInitial = 4, recurringWithTrial = 5, recurringWithTrialAndInitial = 6]
-          example: 2
-          format: integer
-          description: Payment Type ID
-        frequency:
-          type: integer
-          example: 604800
-          format: seconds
-          description: How often the merchant will be able to pull funds from the customer's wallet (604800 => 1 week)
-        networkID:
-          type: integer
-          example: 3
-          format: integer
-          enum: [MainNet = 1, TestNet (Ropsten) = 3]
-          description: Ethereum network ID
-        automatedCashOut:
-          type: boolean
-          example: true
-          format: boolean
-          description: True if cash out is autometed, false if not
-        cashOutFrequency:
-          type: integer
-          example: 1
-          format: seconds
-          description: The cash out frequency
-    BillingModelRequest:
-      type: object
-      description: Billing Model describes the payment details. A merchant can have multiple billing models. For exmample, an online magazine can have a monthly plan which gives access to the customer to certain magazines and it also has billing models for one-time purchase of a magazine.
-      required:
-        - merchantID
-        - title
-        - description
-        - amount
-        - initialPaymentAmount
-        - trialPeriod
-        - currency
-        - numberOfPayments
-        - typeID
-        - frequency
-        - networkID
-        - automatedCashOut
-        - cashOutFrequency
-      properties:
-        merchantID:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-000000fb1459
-          format: uuid
-          description: ID provided to the merchant by PumaPay
-        title:
-          type: string
-          format: text
-          example: National Cryptographic Gold Mebmership
-          description: Title of the  billing model
-        description:
-          type: string
-          format: text
-          example: Access to all gold articles
-          description: Description of the  billing model
-        amount:
-          type: integer
-          example: 1099
-          format: cents
-          description: Cost of the payment in cents (1099 => 10.99)
-        initialPaymentAmount:
-          type: integer
-          example: 199
-          format: cents
-          description: Cost of the payment in cents (199 => 1.99) - Set to zero if no intial fees are required for the payment
-        trialPeriod:
-          type: integer
-          format: seconds
-          example: 86400
-          description: Trial period for the subscription in seconds (86400 => 1 day) - Set to zero if the payment has no trial period
-        currency:
-          type: string
-          example: USD
-          format: text
-          description: Currency the merchant is using specified in 3-letter abbriviation - USD, EUR, GBP etc
-        numberOfPayments:
-          type: integer
-          example: 12
-          format: integer
-          description: Number of payments that the merchant will be allowed to pull from the customer's wallet
-        typeID:
-          type: integer
-          enum: [push = 1, singlePull = 2, recurringPull = 3, recurringWithInitial = 4, recurringWithTrial = 5, recurringWithTrialAndInitial = 6]
-          example: 2
-          format: integer
-          description: Payment Type ID
-        frequency:
-          type: integer
-          example: 604800
-          format: seconds
-          description: How often the merchant will be able to pull funds from the customer's wallet (604800 => 1 week)
-        networkID:
-          type: integer
-          example: 3
-          format: integer
-          enum: [MainNet = 1, TestNet (Ropsten) = 3]
-          description: Ethereum network ID
-        automatedCashOut:
-          type: boolean
-          example: true
-          format: boolean
-          description: True if cash out is autometed, false if not
-        cashOutFrequency:
-          type: integer
-          example: 1
-          format: seconds
-          description: The cash out frequency
-    PullPayment:
-      type: object
-      description: PullPayments are actual payments or subscriptions that the customer has registered to. Each PullPayment is related with a billing model that the merchant has defined.
-      properties:
-        id:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-222222fb1459
-          format: uuid
-          description: Auto-generated ID for the pull payment
-        hdWalletIndex:
-          type: integer
-          example: 1
-          format: integer
-          description: The wallet index attached with this pull payment
-        pullPaymentModelID:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-fb1459
-          format: uuid
-          description: Pull Payment model ID linked with this pull payment
-        numberOfPayments:
-          type: integer
-          example: 12
-          format: integer
-          description: Number of payments that the merchant will be allowed to pull from the customer's wallet
-        nextPaymentDate:
-          type: string
-          example: 1537747200
-          format: unix-epoch-in-seconds
-          description: Unix Epoch Timestamp of the next pull payment
-        lastPaymentDate:
-          type: string
-          example: 1537401600
-          format: unix-epoch-in-seconds
-          description: Unix Epoch Timestamp of the last pull payment
-        startTimestamp:
-          type: string
-          example: 1537401600
-          format: unix-epoch-in-seconds
-          description: Unix Epoch Timestamp of the beginning of the pull payment
-        customerAddress:
-          type: string
-          example: '0x0000000000000000000000000000000000011111'
-          format: eth-address
-          description: The ethereum address of the customer
-        merchantAddress:
-          type: string
-          example: '0x0000000000000000000000000000000000022222'
-          format: eth-address
-          description: The ethereum address of the merchant
-        pullPaymentAddress:
-          type: string
-          example: '0x0000000000000000000000000000000000033333'
-          format: eth-address
-          description: The ethereum address of the pull payment smart contract
-        statusID:
-          type: integer
-          enum: [initial = 1, running = 2, stopped = 3, cancelled = 4, done = 5]
-          example: 2
-          format: integer
-          description: Payment Status ID
-        userID:
-          type: string
-          example: userIdOnMerchantsSystem
-          description: The userID of the customer as it is being used in merchant's existing system
-    PullPaymentRequest:
-      type: object
-      description: PullPayments are actual payments or subscriptions that the customer has registered to. Each PullPayment is related with a billing model that the merchant has defined.
-      required:
-        - BillingModelID
-        - numberOfPayments
-        - startTimestamp
-        - customerAddress
-      properties:
-        pullPaymentModelID:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-fb1459
-          format: uuid
-          description: Pull Payment model ID linked with this pull payment
-        numberOfPayments:
-          type: integer
-          example: 12
-          format: integer
-          description: Number of payments that the merchant will be allowed to pull from the customer's wallet
-        startTimestamp:
-          type: string
-          example: 1537401600
-          format: unix-epoch-in-seconds
-          description: Unix Epoch Timestamp of the beginning of the pull payment
-        customerAddress:
-          type: string
-          example: '0x0000000000000000000000000000000000011111'
-          format: eth-address
-          description: The ethereum address of the customer
-        pullPaymentAddress:
-          type: string
-          example: '0x0000000000000000000000000000000000033333'
-          format: eth-address
-          description: The ethereum address of the pull payment smart contract
-        userID:
-          type: string
-          example: userIdOnMerchantsSystem
-          description: The userID of the customer as it is being used in merchant's existing system
-    Transaction:
-      type: object
-      description: On the Ethereum network any interaction and change to the state of the blockchain is considered as a transaction. In the PumaPay ecosystem a transaction is used in the same context. Each PullPayment can have multiple transactions and there are multiple types of transactions.
-      properties:
-        id:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-555555fb1459
-          format: uuid
-          description: Auto-generated ID for the transaction
-        hash:
-          type: string
-          example: '0x0813277eb09b5741f75ac2737db874d648dabf42c5029fbdfaa46f0000000000'
-          format: eth-transaction-hash
-          description: Transaction hash associated with payment
-        status:
-          type: integer
-          enum: [pending = 1, failed = 2, success = 3]
-          example: 2
-          format: integer
-          description: Transaction Status
-        type:
-          type: integer
-          enum: [register = 1, intital = 2, execute = 3, cancel = 4]
-          example: 2
-          format: integer
-          description: Transaction Types. Registration transaction for when the customer registers to a billing model. Execute transaction for when a merchant pull funds from the customer based on the billing model. Cancel transaction for when the customer cancels a subscription. Initial transaction for when the billing model has initial payment specified and the merchant pulls the relevant funds.
-        paymentID:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-fb1459
-          format: uuid
-          description: Pull Payment ID linked with this transaction
-        timestamp:
-          type: string
-          example: 1537401600
-          format: unix-epoch-in-seconds
-          description: Unix Epoch Timestamp of the transaction
-    TransactionRequest:
-      type: object
-      required:
-        - hash
-        - paymentID
-        - typeID
-        - timestamp
-      properties:
-        hash:
-          type: string
-          example: '0xalmr2o8po5c2gkiioqfjb7900285752431268b4p1e0c9jd4qkeginakhol8f9d4'
-          format: eth-transaction-hash
-          description: Transaction hash associated with payment
-        paymentID:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-fb1459
-          format: uuid
-          description: Pull Payment ID linked with this transaction
-        typeID:
-          type: integer
-          enum: [register = 1, intital = 2, execute = 3, cancel = 4]
-          example: 2
-          format: integer
-          description: Transaction Types. Registration transaction for when the customer registers to a billing model. Execute transaction for when a merchant pull funds from the customer based on the billing model. Cancel transaction for when the customer cancels a subscription. Initial transaction for when the billing model has initial payment specified and the merchant pulls the relevant funds.
-        timestamp:
-          type: string
-          example: 1537401600
-          format: unix-epoch-in-seconds
-          description: Unix Epoch Timestamp of the transaction
-    TransactionResponse:
-      type: object
-      description: On the Ethereum network any interaction and change to the state of the blockchain is considered as a transaction. In the PumaPay ecosystem a transaction is used in the same context. Each PullPayment can have multiple transactions and there are multiple types of transactions.
-      properties:
-        id:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-555555fb1459
-          format: uuid
-          description: Auto-generated ID for the transaction
-        hash:
-          type: string
-          example: '0xalmr2o8po5c2gkiioqfjb7900285752431268b4p1e0c9jd4qkeginakhol8f9d4'
-          format: eth-transaction-hash
-          description: Transaction hash associated with payment
-        status:
-          type: string
-          enum: [pending, failed, success]
-          example: pending
-          format: status
-          description: Transaction Status
-        type:
-          type: string
-          enum: [register, intital, execute, cancel]
-          example: register
-          format: type
-          description: Transaction Type
-        paymentID:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-fb1459
-          format: uuid
-          description: Pull Payment ID linked with this transaction
-        timestamp:
-          type: string
-          example: 1537401600
-          format: unix-epoch-in-seconds
-          description: Unix Epoch Timestamp of the transaction
-    QrPayload:
-      type: object
-      description: QR Code is used by the wallet in order to initiate the PullPayment. These methods return a JSON payload, and it is up to the frontend application or the UI merchant is using to display a QR image.
-      properties:
-        paymentModelURL:
-          type: string
-        paymentURL:
-          type: string
-        transactionURL:
-          type: string
-    BillingModelNoMerchantPatch:
-      type: object
-      required:
-        - automatedCashOut
-        - cashOutFrequency
-      properties:
-        automatedCashOut:
-          type: boolean
-          example: true
-          format: boolean
-          description: True if cash out is autometed, false if not
-        cashOutFrequency:
-          type: integer
-          example: 1
-          format: seconds
-          description: The cash out frequency
-    BillingModelNoMerchant:
-      type: object
-      required:
-        - title
-        - description
-        - amount
-        - initialPaymentAmount
-        - trialPeriod
-        - currency
-        - numberOfPayments
-        - typeID
-        - frequency
-        - networkID
-        - automatedCashOut
-        - cashOutFrequency
-      properties:
-        title:
-          type: string
-          format: text
-          example: National Cryptographic Gold Mebmership
-          description: Title of the  billing model
-        description:
-          type: string
-          format: text
-          example: Access to all gold articles
-          description: Description of the  billing model
-        amount:
-          type: integer
-          example: 1099
-          format: cents
-          description: Cost of the payment in cents (1099 => 10.99)
-        initialPaymentAmount:
-          type: integer
-          example: 199
-          format: cents
-          description: Cost of the payment in cents (199 => 1.99) - Set to zero if no intial fees are required for the payment
-        trialPeriod:
-          type: integer
-          format: seconds
-          example: 86400
-          description: Trial period for the subscription in seconds (86400 => 1 day) - Set to zero if the payment has no trial period
-        currency:
-          type: string
-          example: USD
-          format: text
-          description: Currency the merchant is using specified in 3-letter abbriviation - USD, EUR, GBP etc
-        numberOfPayments:
-          type: integer
-          example: 12
-          format: integer
-          description: Number of payments that the merchant will be allowed to pull from the customer's wallet
-        typeID:
-          type: integer
-          enum: [push = 1, singlePull = 2, recurringPull = 3, recurringWithInitial = 4, recurringWithTrial = 5, recurringWithTrialAndInitial = 6]
-          example: 2
-          format: integer
-          description: Payment Type ID
-        frequency:
-          type: integer
-          example: 604800
-          format: seconds
-          description: How often the merchant will be able to pull funds from the customer's wallet (604800 => 1 week)
-        networkID:
-          type: integer
-          example: 3
-          format: integer
-          enum: [MainNet = 1, TestNet (Ropsten) = 3]
-          description: Ethereum network ID
-        automatedCashOut:
-          type: boolean
-          example: true
-          format: boolean
-          description: True if cash out is autometed, false if not
-        cashOutFrequency:
-          type: integer
-          example: 1
-          format: seconds
-          description: The cash out frequency
-    BillingModelNoMerchantRequest:
-      type: object
-      required:
-        - title
-        - description
-        - amount
-        - initialPaymentAmount
-        - trialPeriod
-        - currency
-        - numberOfPayments
-        - typeID
-        - frequency
-        - networkID
-        - automatedCashOut
-        - cashOutFrequency
-      properties:
-        merchantID:
-          type: string
-          example: 4a17335e-bf18-11e8-a355-000000fb1459
-          format: uuid
-          description: ID provided to the merchant by PumaPay
-        title:
-          type: string
-          format: text
-          example: National Cryptographic Gold Mebmership
-          description: Title of the  billing model
-        description:
-          type: string
-          format: text
-          example: Access to all gold articles
-          description: Description of the  billing model
-        amount:
-          type: integer
-          example: 1099
-          format: cents
-          description: Cost of the payment in cents (1099 => 10.99)
-        initialPaymentAmount:
-          type: integer
-          example: 199
-          format: cents
-          description: Cost of the payment in cents (199 => 1.99) - Set to zero if no intial fees are required for the payment
-        trialPeriod:
-          type: integer
-          format: seconds
-          example: 86400
-          description: Trial period for the subscription in seconds (86400 => 1 day) - Set to zero if the payment has no trial period
-        currency:
-          type: string
-          example: USD
-          format: text
-          description: Currency the merchant is using specified in 3-letter abbriviation - USD, EUR, GBP etc
-        numberOfPayments:
-          type: integer
-          example: 12
-          format: integer
-          description: Number of payments that the merchant will be allowed to pull from the customer's wallet
-        typeID:
-          type: integer
-          enum: [push = 1, singlePull = 2, recurringPull = 3, recurringWithInitial = 4, recurringWithTrial = 5, recurringWithTrialAndInitial = 6]
-          example: 2
-          format: integer
-          description: Payment Type ID
-        frequency:
-          type: integer
-          example: 604800
-          format: seconds
-          description: How often the merchant will be able to pull funds from the customer's wallet (604800 => 1 week)
-        networkID:
-          type: integer
-          example: 3
-          format: integer
-          enum: [MainNet = 1, TestNet (Ropsten) = 3]
-          description: Ethereum network ID
-        automatedCashOut:
-          type: boolean
-          example: true
-          format: boolean
-          description: True if cash out is autometed, false if not
-        cashOutFrequency:
-          type: integer
-          example: 1
-          format: seconds
-          description: The cash out frequency
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+definitions:
+  UserItem:
+    type: object
+    required:
+    - data
+    - message
+    - status
+    - success
+    properties:
+      success:
+        type: string
+        example: "true"
+      status:
+        type: number
+        example: 200.0
+      message:
+        type: string
+        example: Successfully retrived..
+      data:
+        type: object
+        example:
+          tosAccepted: false
+          emailVerified: false
+          _id: 5cae3ffd6967601f00ff498b
+          firstname: test3
+          lastname: test3
+          email: test@gmail.com
+          password: $2b$10$TyXVBUv
+          imageLink: src/images/picture1.jpeg
+        properties: {}
+  registrationInput:
+    type: object
+    required:
+    - data
+    properties:
+      data:
+        type: object
+        example:
+          tosAccepted: false
+          emailVerified: false
+          _id: 5cae3ffd6967601f00ff498b
+          firstname: test3
+          lastname: test3
+          email: test@gmail.com
+          password: $2b$10$TyXVBUvWB2rdv.FpZPb71u7xJnFgdzkus937tLHYeNr5ZSx9iobv
+          imageLink: src/images/picture1.jpeg
+          mobile: "1231212311"
+          userType: Admin
+          __v: 0
+        properties: {}
+  InventoryItem:
+    type: object
+    required:
+    - manufacturer
+    - name
+    - releaseDate
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      name:
+        type: string
+        example: Widget Adapter
+      releaseDate:
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      manufacturer:
+        $ref: '#/definitions/Manufacturer'
+  Manufacturer:
+    required:
+    - name
+    properties:
+      name:
+        type: string
+        example: ACME Corporation
+      homePage:
+        type: string
+        format: url
+        example: https://www.acme-corp.com
+      phone:
+        type: string
+        example: 408-867-5309
