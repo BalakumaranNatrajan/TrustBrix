@@ -6,8 +6,8 @@ var jwt = require('jsonwebtoken');
   * @param {any} userId The userId is a payload used to generate token
   * @returns {string} Returns the string as token
   */
-const generateToken = async (userId)=> {
-    const token = await jwt.sign({ id: userId }, 'secret123');
+const generateToken = async (userId) => {
+    const token = await jwt.sign({ id: userId }, 'secret123', { expiresIn: 120 });
     return token;
 }
 
@@ -18,11 +18,11 @@ const generateToken = async (userId)=> {
   * @param {any} token The userId is a payload used to generate token
   * @returns {string} Returns the string as Autheraised user or not
   */
-const verifyToken = async (token)=> {
+const verifyToken = async (token) => {
     const result = await jwt.decode(token);
-    if(result === null)
-        return 'Unautheraised user..'
+    if (result === null)
+        return result;
     return result;
 }
 
-module.exports = { generateToken,verifyToken }
+module.exports = { generateToken, verifyToken }

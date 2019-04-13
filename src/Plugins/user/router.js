@@ -1,17 +1,7 @@
-const { RegUser, GetUser, LoginUser, ForgetPassword } = require('./controller');
+const { GetUser, ForgetPassword } = require('./controller');
 
 
 const config = [
-    {
-        method: 'post',
-        route: '/register',
-        handler: RegUser
-    },
-    {
-        method: 'post',
-        route: '/login',
-        handler: LoginUser
-    },
     {
         method: 'get',
         route: '/get-user/:id',

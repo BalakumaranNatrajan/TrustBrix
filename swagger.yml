@@ -1,177 +1,237 @@
----
 swagger: "2.0"
 info:
-  description: Application for buying and selling assets
-  version: 1.0.0
-  title: Trust Brix
+  description: "Trustbrix - real estate for everyone"
+  version: "1.0.0"
+  title: "Trustbrix"
+  termsOfService: "http://swagger.io/terms/"
   contact:
-    email: developers@trustbrix.com
+    email: "developers@trustbrix.com"
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-host: virtserver.swaggerhub.com
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:4500"
+basePath: "/api"
 tags:
-- name: Register
-  description: Registration for new user
-- name: Authentication
-  description: Authentication contains login,forget password and so on
+- name: "Users"
+  description: "Operations about user"
+  externalDocs:
+    description: "Find out more"
+    url: "http://editor.swagger.io/"
+- name: "Payment"
+  description: "Operations about user"
+  externalDocs:
+    description: "Find out more"
+    url: "http://editor.swagger.io/"
 schemes:
-- https
+- "https"
+- "http"
 paths:
-  /get-user/{id}:
-    get:
-      tags:
-      - Register
-      summary: Get a user by id
-      description: |
-        Get a user by id
-      operationId: Get user
-      produces:
-      - application/json
-      parameters:
-      - name: id
-        in: query
-        description: ID of user for retrive
-        required: true
-      responses:
-        200:
-          description: Search results matching criteria
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/UserItem'
-        400:
-          description: bad input parameter
-  /register:
-    post:
-      tags:
-      - Register
-      summary: Create a new user
-      description: To create a new user
-      operationId: register the user
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: login items
-        description: username and password for login
-        required: false
-        schema:
-          $ref: '#/definitions/InventoryItem'
-      responses:
-        200:
-          description: Search results matching criteria
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/UserItem'
-        400:
-          description: bad input parameter
   /login:
     post:
       tags:
-      - Authentication
-      summary: Login
-      description: To authenticate the user
+      - "Users"
+      summary: "To authenticate user"
+      description: ""
+      operationId: "authentication"
       consumes:
-      - application/json
+      - "application/json"
       produces:
-      - application/json
+      - "application/json"
       parameters:
-      - in: body
-        name: login items
-        description: username and password for login
-        required: false
+      - in: "body"
+        name: "body"
+        required: true
         schema:
-          $ref: '#/definitions/InventoryItem'
+          $ref: "#/definitions/login"
       responses:
-        201:
-          description: item created
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/response"
+        405:
+          description: "Invalid input"
+  /register:
+    post:
+      tags:
+      - "Users"
+      summary: "To Register the new user"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/registration"
+      responses:
+        405:
+          description: "Invalid input"
+  /get-user/{id}:
+    get:
+      tags:
+      - "Users"
+      summary: "Get user by id"
+      description: ""
+      operationId: "getUserById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id that needs to be fetched. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
         400:
-          description: invalid input, object invalid
-        409:
-          description: an existing item already exists
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+  /forget-password/{id}:
+    post:
+      tags:
+      - "Users"
+      summary: "Get user by id"
+      description: ""
+      operationId: "forgetPassword"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id that needs to be fetched. "
+        required: true
+        type: "string"
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/forget"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+          
 definitions:
-  UserItem:
-    type: object
+  registration:
+    type: "object"
     required:
-    - data
-    - message
-    - status
-    - success
+    - "firstname"
+    - "lastname"
+    - "email"
+    - "password"
+    - "imageLink"
+    - "mobile"
+    - "userType"
     properties:
-      success:
-        type: string
+      firstname:
+        type: "string"
+        example: "test"
+      lastname:
+        type: "string"
+        example: "test"
+      email:
+        type: "string"
+        example: "testpm@trustbrix.com"
+      password:
+        type: "string"
+        example: "test@123"
+      imageLink:
+        type: "string"
+        example: "src/images/24242342.jpeg"
+      mobile:
+        type: "number"
+        example: "9080878672"
+      userType:
+        type: "string"
+        example: "admin"
+    xml:
+      name: "Order"
+  forget:
+    type: "object"
+    required:
+    - "password"
+    properties:
+      password:
+        type: "string"
+        example: "test@123"
+  login:
+    type: "object"
+    required:
+    - "email"
+    - "password"
+    properties:
+      email:
+        type: "string"
+        example: "testpm@trustbrix.com"
+      password:
+        type: "string"
+        example: "test@123"
+  response:
+    type: "object"
+    properties:
+      success: 
+        type: "boolean"
         example: "true"
       status:
-        type: number
-        example: 200.0
-      message:
-        type: string
-        example: Successfully retrived..
-      data:
-        type: object
-        example:
-          tosAccepted: false
-          emailVerified: false
-          _id: 5cae3ffd6967601f00ff498b
-          firstname: test3
-          lastname: test3
-          email: test@gmail.com
-          password: $2b$10$TyXVBUv
-          imageLink: src/images/picture1.jpeg
-        properties: {}
-  registrationInput:
-    type: object
-    required:
-    - data
-    properties:
-      data:
-        type: object
-        example:
-          tosAccepted: false
-          emailVerified: false
-          _id: 5cae3ffd6967601f00ff498b
-          firstname: test3
-          lastname: test3
-          email: test@gmail.com
-          password: $2b$10$TyXVBUvWB2rdv.FpZPb71u7xJnFgdzkus937tLHYeNr5ZSx9iobv
-          imageLink: src/images/picture1.jpeg
-          mobile: "1231212311"
-          userType: Admin
-          __v: 0
-        properties: {}
-  InventoryItem:
-    type: object
-    required:
-    - manufacturer
-    - name
-    - releaseDate
-    properties:
-      id:
-        type: string
-        format: uuid
-        example: d290f1ee-6c54-4b01-90e6-d701748f0851
-      name:
-        type: string
-        example: Widget Adapter
-      releaseDate:
-        type: string
-        format: date-time
-        example: 2016-08-29T09:12:33.001Z
-      manufacturer:
-        $ref: '#/definitions/Manufacturer'
-  Manufacturer:
-    required:
-    - name
-    properties:
-      name:
-        type: string
-        example: ACME Corporation
-      homePage:
-        type: string
-        format: url
-        example: https://www.acme-corp.com
-      phone:
-        type: string
-        example: 408-867-5309
+        type: "number"
+        example: "200"
+      message: 
+        type: "string"
+        example: "Successfully retrived"
+      data: 
+        type: "object"
+        properties:
+          token: 
+            type: "string"
+            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNTU1MTIxNDQ0LCJleHAiOjE1NTUxMjUwNDR9.CHMlvUq_-OFC1ItOiZgPwmlotL62cZ9-AHIS7WaF1cs"
+          user: 
+            type: "object"
+            properties:
+              tosAccepted:
+                type: "boolean"
+                example: "true"
+              emailVerified:
+                type: "boolean"
+                example: "true"
+              _id: 
+                type: "string"
+                example: "5cae3ffd6967601f00ff498b"
+              firstname:
+                type: "string"
+                example: "test"
+              lastname:
+                type: "string"
+                example: "test"
+              email:
+                type: "string"
+                example: "testpm@trustbrix.com"
+              password:
+                type: "string"
+                example: "$2b$10$vtuIbWnhd0518eqrFXHmy.07XRtek9aWSra/P5U4Hnk98GimT0LnK"
+              imageLink: 
+                type: "string"
+                example: "src/images/picture1.jpeg"
+              mobile:
+                type: "number"
+                example: "9080878672"
+              userType: 
+                type: "string"
+                example: "admin"
+securityDefinitions:
+  UserSecurity:
+    type: apiKey
+    in: header
+    name: access-token
+security:
+  - UserSecurity: []                
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

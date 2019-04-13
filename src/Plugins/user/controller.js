@@ -1,56 +1,7 @@
 const _ = require('lodash');
 const Joi = require('joi');
 const User = require('../../models/user');
-const { checkUser, generateToken } = require('../../lib/bcrypt');
 const { handleSuccess, handleFailure } = require('../../utils/ResponseHandler');
-const registerSchema = require('./Schema/register.schema');
-const loginSchema = require('./Schema/login.schema');
-
-
-/**
-  * @method RegUser
-  * @description To store the user details
-  */
-
-const RegUser = async (req, res) => {
-    const isValid = registerSchema(req.body);
-    if (isValid.error) {
-        res.send(isValid.error);
-    }
-    const userFound = await User.findOne({ email: req.body.email });
-    if (!_.isEmpty(userFound)) {
-        res.send(handleFailure("Email aldready exists.."));
-    }
-    const user = await new User(req.body);
-    const result = await user.save();
-    res.send(handleSuccess(result));
-}
-
-/**
-  * @method RegUser
-  * @description To store the user details
-  */
-
-const LoginUser = async (req, res) => {
-    const isValid = loginSchema(req.body);
-    if (isValid.error) {
-        res.send(isValid.error);
-    }
-    const user = await User.findOne({ email: req.body.email });
-    if (_.isEmpty(user)) {
-        res.boom.notFound("User not found");
-    }
-    const match = await checkUser(req.body.password, user.password);
-    if (!match) {
-        res.boom.unauthorized('Invalid password');
-    }
-    const token = await generateToken(user.email);
-    const data = {
-        token: token,
-        user
-    }
-    res.send(handleSuccess(data));
-}
 
 
 /**
@@ -100,4 +51,5 @@ const ForgetPassword = async (req, res) => {
     res.send(handleSuccess(result));
 }
 
-module.exports = { RegUser, GetUser, LoginUser, ForgetPassword }
+
+module.exports = { GetUser, ForgetPassword }

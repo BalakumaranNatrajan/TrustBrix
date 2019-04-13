@@ -1,4 +1,4 @@
-const Settings = {
+const settings = {
     'listenPort': process.env.listenPort ? process.env.listenPort : 4500,
 }
 
@@ -9,4 +9,4 @@ const MySqlConfig = {
     database: process.env.mySqlDatabase ? process.env.mySqlDatabase : 'pets'
 }
 
-module.exports = { MySqlConfig, Settings };
+module.exports = { MySqlConfig, settings };

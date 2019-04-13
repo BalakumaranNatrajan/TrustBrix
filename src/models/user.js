@@ -76,21 +76,4 @@ User.pre('save', function preSave(next) {
         .catch(err => next(err))
 })
 
-User.methods.validatePassword = function validatePassword(password) {
-    const user = this
-    return new Promise((resolve, reject) => {
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) return reject(err)
-
-            resolve(isMatch)
-        })
-    })
-}
-
-User.methods.generateToken = function generateToken() {
-    const user = this
-
-    return jwt.sign({ id: user.id }, config.token)
-}
-
 module.exports = mongoose.model('user', User);

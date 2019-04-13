@@ -1,32 +1,53 @@
 const glob = require('glob');
 const express = require('express');
-const router = express.Router();
+const ProtectedRoutes = express.Router();
 var _ = require('lodash');
 
+const { verifyToken } = require('../lib/token');
 
-glob(`${__dirname}/*`, { ignore: '**/index.js' }, (err, matches) => {
+// ProtectedRoutes for using secure routing
+ProtectedRoutes.use(async (req, res, next) => {
+    var token = req.headers['access-token'];
+    if (token) {
+        const result = await verifyToken(token);
+        if (result === null)
+            res.boom.unauthorized('Invalid token');
+
+        return next()
+    }
+    else {
+        res.send({ message: "Token required" });
+    }
+});
+
+
+const prefixUrl = '/api';
+glob(`${__dirname}/*`, { ignore: ['**/auth', '**/index.js'] }, (err, matches) => {
     if (err) {
         throw err
     }
     _.map(matches, (value) => {
         const routeFile = require(`${value}/router`);
         routeFile.map((routes) => {
-            const { method, route, handler } = routes;
+            let { method, route, handler } = routes;
+            if (route !== '/login')
+                route = prefixUrl + route;
+
             if (method.toLowerCase() === 'get') {
-                router.get(route, handler)
+                ProtectedRoutes.get(route, handler)
             }
             else if (method.toLowerCase() === 'post') {
-                router.post(route, handler)
+                ProtectedRoutes.post(route, handler)
             }
             else if (method.toLowerCase() === 'delete') {
-                router.delete(route, handler)
+                ProtectedRoutes.delete(route, handler)
             }
             else if (method.toLowerCase() === 'patch') {
-                router.patch(route, handler)
+                ProtectedRoutes.patch(route, handler)
             }
         })
     })
 })
 
 
-module.exports = router;
+module.exports = ProtectedRoutes;

@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mollie/api-client": "^2.2.0",
     "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "boom": "^7.3.0",
@@ -24,6 +25,7 @@
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.0",
     "lodash": "^4.17.11",
+    "mollie-api-node": "^1.4.0",
     "mongodb": "^3.2.2",
     "mongoose": "^5.4.9",
     "morgan": "^1.9.1",
