@@ -12,7 +12,6 @@ ProtectedRoutes.use(async (req, res, next) => {
         const result = await verifyToken(token);
         if (result === null)
             res.boom.unauthorized('Invalid token');
-
         return next();
     }
     else {
@@ -30,8 +29,7 @@ glob(`${__dirname}/*`, { ignore: ['**/auth', '**/index.js'] }, (err, matches) =>
         const routeFile = require(`${value}/router`);
         routeFile.map((routes) => {
             let { method, route, handler } = routes;
-            if (route !== '/login')
-                route = prefixUrl + route;
+            route = prefixUrl + route;
 
             if (method.toLowerCase() === 'get') {
                 ProtectedRoutes.get(route, handler)

@@ -1,4 +1,4 @@
-const { GetUser, ForgetPassword } = require('./controller');
+const { GetUser, ForgetPassword, sendMail } = require('./controller');
 
 
 const config = [
@@ -11,6 +11,11 @@ const config = [
         method: 'post',
         route: '/forget-password/:id',
         handler: ForgetPassword
+    },
+    {
+        method: 'get',
+        route: '/send-mail/:email',
+        handler: sendMail
     }
 ]
 

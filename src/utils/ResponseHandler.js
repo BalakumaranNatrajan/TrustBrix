@@ -7,6 +7,14 @@ const handleSuccess = (data) => {
     }
 }
 
+const handleEmailSuccess = () => {
+    return {
+        success: true,
+        status: 200,
+        message: "Email send successfully",
+    }
+}
+
 const handleFailure = (message) => {
     return {
         success: false,
@@ -16,4 +24,4 @@ const handleFailure = (message) => {
     }
 }
 
-module.exports = { handleSuccess, handleFailure }
+module.exports = { handleSuccess, handleFailure, handleEmailSuccess }
