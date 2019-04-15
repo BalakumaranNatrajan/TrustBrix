@@ -12,7 +12,7 @@ const { handleSuccess, handleFailure } = require('../../utils/ResponseHandler');
 const GetUser = async (req, res) => {
     const getUsersSchema = Joi.object().keys({
         params: {
-            id: Joi.string().alphanum().min(24)
+            id: Joi.string().alphanum().min(24).required()
         }
     })
     const result = Joi.validate({ params: req.params }, getUsersSchema);
@@ -35,7 +35,7 @@ const GetUser = async (req, res) => {
 const ForgetPassword = async (req, res) => {
     const getUsersSchema = Joi.object().keys({
         params: {
-            id: Joi.string().alphanum().min(24)
+            id: Joi.string().alphanum().min(24).required()
         }
     })
     const isValid = Joi.validate({ params: req.params }, getUsersSchema);

@@ -1,12 +1,6 @@
 const settings = {
-    'listenPort': process.env.listenPort ? process.env.listenPort : 4500,
+    'PORT': process.env.PORT ? process.env.PORT : 4500,
+    'mongoUrl': process.env.mongoUrl ? process.env.mongoUrl : 'mongodb://localhost/TrustBrix'
 }
 
-const MySqlConfig = {
-    host: process.env.mySqlHost ? process.env.mySqlHost : 'localhost',
-    user: process.env.mySqlUser ? process.env.mySqlUser : 'root',
-    password: process.env.mySqlPassword ? process.env.mySqlPassword : 'root',
-    database: process.env.mySqlDatabase ? process.env.mySqlDatabase : 'pets'
-}
-
-module.exports = { MySqlConfig, settings };
+module.exports = { settings };

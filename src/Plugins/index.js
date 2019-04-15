@@ -13,7 +13,7 @@ ProtectedRoutes.use(async (req, res, next) => {
         if (result === null)
             res.boom.unauthorized('Invalid token');
 
-        return next()
+        return next();
     }
     else {
         res.send({ message: "Token required" });

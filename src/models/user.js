@@ -27,7 +27,7 @@ const User = new mongoose.Schema({
     },
     imageLink: {
         type: String,
-        required: true
+        // required: true
     },
     address: {
         type: String

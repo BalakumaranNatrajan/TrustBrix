@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
   * @returns {string} Returns the string as token
   */
 const generateToken = async (userId) => {
-    const token = await jwt.sign({ id: userId }, 'secret123', { expiresIn: 120 });
+    const token = await jwt.sign({ id: userId }, 'secret123', { expiresIn: 12 });
     return token;
 }
 

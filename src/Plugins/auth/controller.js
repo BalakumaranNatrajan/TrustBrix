@@ -6,16 +6,30 @@ const loginSchema = require('./schema/login.schema');
 const registerSchema = require('../auth/schema/register.schema');
 
 
+// const find = async (req, res, next) => {
+//     console.log("resqq", req.body);
+//     const userFound = await User.findOne({ email: req.body.email });
+//     console.log("userFound", userFound);
+//     if (!_.isEmpty(userFound)) {
+//         res.send("Email aldready exists..");
+//     }
+//     return next();
+// }
+
 /**
   * @method RegUser
   * @description To store the user details
   */
 
 const RegUser = async (req, res) => {
+    const fileObj = {
+        imageLink: req.file.path
+    }
     const isValid = registerSchema(req.body);
     if (isValid.error) {
         res.send(isValid.error);
     }
+    _.assign(req.body, fileObj);
     const userFound = await User.findOne({ email: req.body.email });
     if (!_.isEmpty(userFound)) {
         res.send(handleFailure("Email aldready exists.."));
