@@ -22,16 +22,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(SWAGGER_DOCUMENT));
 const port = process.env.PORT || settings.PORT;
 app.listen(port, () => {
-  console.log("Server running on port".cyan, port);
+  console.log("-> Server running on port".cyan, port);
 })
 
 
 const mongoUrl = settings.mongoUrl;
 mongoose.connect(mongoUrl, { useNewUrlParser: true }, (err) => {
   if (err) throw err
-  console.log("Mongo db connected successfully".cyan);
+  console.log("-> Mongo db connected successfully".cyan);
 });
 mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
 
 app.use(router);
-app.use(protectedrouter);
+app.use(settings.baseUrl, protectedrouter);

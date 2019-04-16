@@ -21,7 +21,7 @@ ProtectedRoutes.use(async (req, res, next) => {
 });
 
 
-const prefixUrl = '/api';
+// const prefixUrl = '/api';
 glob(`${__dirname}/*`, { ignore: ['**/auth', '**/index.js'] }, (err, matches) => {
     if (err) {
         throw err
@@ -30,7 +30,7 @@ glob(`${__dirname}/*`, { ignore: ['**/auth', '**/index.js'] }, (err, matches) =>
         const routeFile = require(`${value}/router`);
         routeFile.map((routes) => {
             let { method, route, handler } = routes;
-            route = prefixUrl + route;
+            // route = prefixUrl + route;
 
             if (method.toLowerCase() === 'get') {
                 ProtectedRoutes.get(route, handler)
@@ -41,7 +41,7 @@ glob(`${__dirname}/*`, { ignore: ['**/auth', '**/index.js'] }, (err, matches) =>
             else if (method.toLowerCase() === 'delete') {
                 ProtectedRoutes.delete(route, handler)
             }
-            else if (method.toLowerCase() === 'patch' && route === '/api/update-user/:email') {
+            else if (method.toLowerCase() === 'patch' && route === '/update-user/:email') {
                 ProtectedRoutes.patch(route, upload, handler)
             }
             else if (method.toLowerCase() === 'patch') {

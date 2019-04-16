@@ -94,11 +94,12 @@ const sendMail = async (req, res) => {
 }
 
 /**
-  * @method RegUser
-  * @description To store the user details
+  * @method updateUser
+  * @description To update the user details using mail id
   */
 
 const updateUser = async (req, res) => {
+    console.log("req.file", req.file);
     const fileObj = {
         imageLink: req.file.path
     }
