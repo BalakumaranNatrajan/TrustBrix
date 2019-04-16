@@ -5,7 +5,6 @@ const path = require('path')
 
 
 async function sentEmail(data) {
-    console.log("directory", path.join(__dirname, '../views'));
     const options = {
         viewEngine: {
             extname: '.hbs',
