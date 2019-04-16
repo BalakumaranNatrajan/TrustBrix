@@ -1,6 +1,7 @@
 const glob = require('glob');
 const express = require('express');
 const ProtectedRoutes = express.Router();
+const upload = require('../lib/multer');
 var _ = require('lodash');
 
 const { verifyToken } = require('../lib/token');
@@ -39,6 +40,9 @@ glob(`${__dirname}/*`, { ignore: ['**/auth', '**/index.js'] }, (err, matches) =>
             }
             else if (method.toLowerCase() === 'delete') {
                 ProtectedRoutes.delete(route, handler)
+            }
+            else if (method.toLowerCase() === 'patch' && route === '/api/update-user/:email') {
+                ProtectedRoutes.patch(route, upload, handler)
             }
             else if (method.toLowerCase() === 'patch') {
                 ProtectedRoutes.patch(route, handler)

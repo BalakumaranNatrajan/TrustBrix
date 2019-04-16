@@ -10,7 +10,6 @@ info:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 host: "localhost:4500"
-basePath: "/api"
 tags:
 - name: "Users"
   description: "Operations about user"
@@ -57,19 +56,103 @@ paths:
       summary: "To Register the new user"
       description: ""
       consumes:
-      - "application/json"
+      - "multipart/form-data"
       produces:
-      - "application/json"
+      - "multipart/form-data"
       parameters:
-      - in: "body"
-        name: "body"
+      - name: "file"
+        in: "formData"
+        description: "The file to upload."
         required: true
-        schema:
-          $ref: "#/definitions/registration"
+        type: "file"
+      - name: "firstname"
+        in: "formData"
+        description: "firstname"
+        required: true
+        type: "string"
+      - name: "lastname"
+        in: "formData"
+        description: "lastname"
+        required: true
+        type: "string"
+      - name: "email"
+        in: "formData"
+        description: "email"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "formData"
+        description: "password"
+        required: true
+        type: "string"
+      - name: "mobile"
+        in: "formData"
+        description: "mobile"
+        required: true
+        type: "string"
+      - name: "userType"
+        in: "formData"
+        description: "Type of user"
+        required: true
+        type: "string"
       responses:
         405:
           description: "Invalid input"
-  /get-user/{id}:
+  /api/update-user/{email}:
+    patch:
+      tags:
+      - "Users"
+      summary: "To update existing user"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "multipart/form-data"
+      parameters:
+      - name: "email"
+        in: "path"
+        description: "email of the user to update"
+        required: true
+        type: "string"
+      - name: "file"
+        in: "formData"
+        description: "The file to upload."
+        required: true
+        type: "file"
+      - name: "firstname"
+        in: "formData"
+        description: "firstname"
+        required: true
+        type: "string"
+      - name: "lastname"
+        in: "formData"
+        description: "lastname"
+        required: true
+        type: "string"
+      - name: "email"
+        in: "formData"
+        description: "email"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "formData"
+        description: "password"
+        required: true
+        type: "string"
+      - name: "mobile"
+        in: "formData"
+        description: "mobile"
+        required: true
+        type: "string"
+      - name: "userType"
+        in: "formData"
+        description: "Type of user"
+        required: true
+        type: "string"
+      responses:
+        405:
+          description: "Invalid input"
+  /api/get-user/{id}:
     get:
       tags:
       - "Users"
@@ -91,17 +174,39 @@ paths:
           description: "Invalid username supplied"
         404:
           description: "User not found"
-  /forget-password/{id}:
+  /api/send-mail/{email}:
+    get:
+      tags:
+      - "Users"
+      summary: "Get user by email and send a recovery mail"
+      description: ""
+      operationId: "sentmail"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "email"
+        in: "path"
+        description: "The id that needs to be fetched. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid email supplied"
+        404:
+          description: "User not found"
+  /api/forget-password/{email}:
     post:
       tags:
       - "Users"
-      summary: "Get user by id"
+      summary: "Get user by email and update password"
       description: ""
       operationId: "forgetPassword"
       produces:
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "email"
         in: "path"
         description: "The id that needs to be fetched. "
         required: true
@@ -115,14 +220,14 @@ paths:
         200:
           description: "successful operation"
         400:
-          description: "Invalid username supplied"
+          description: "Invalid email supplied"
         404:
           description: "User not found"
-          
 definitions:
   registration:
     type: "object"
     required:
+    - "file"
     - "firstname"
     - "lastname"
     - "email"
@@ -131,6 +236,9 @@ definitions:
     - "mobile"
     - "userType"
     properties:
+      file:
+        type: "string"
+        example: "image1.txt"
       firstname:
         type: "string"
         example: "test"
