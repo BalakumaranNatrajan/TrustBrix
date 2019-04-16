@@ -25,7 +25,7 @@ async function sentEmail(data) {
 
     transporter.use('compile', hbs(options));
     let mailOptions = {
-        from: 'developers@trustbrix.com', // sender address
+        from: 'TrustBrix <developers@trustbrix.com>', // sender address
         to: data.email, // list of receivers
         subject: 'Recovery password email',
         template: 'forget',

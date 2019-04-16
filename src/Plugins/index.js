@@ -21,7 +21,6 @@ ProtectedRoutes.use(async (req, res, next) => {
 });
 
 
-// const prefixUrl = '/api';
 glob(`${__dirname}/*`, { ignore: ['**/auth', '**/index.js'] }, (err, matches) => {
     if (err) {
         throw err
@@ -30,8 +29,6 @@ glob(`${__dirname}/*`, { ignore: ['**/auth', '**/index.js'] }, (err, matches) =>
         const routeFile = require(`${value}/router`);
         routeFile.map((routes) => {
             let { method, route, handler } = routes;
-            // route = prefixUrl + route;
-
             if (method.toLowerCase() === 'get') {
                 ProtectedRoutes.get(route, handler)
             }
