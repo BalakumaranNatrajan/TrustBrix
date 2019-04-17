@@ -3,7 +3,10 @@ const hbs = require('nodemailer-express-handlebars');
 const path = require('path')
 
 
-
+/**
+  * @method sentEmail
+  * @description To send mail to the user
+  */
 async function sentEmail(data) {
     const options = {
         viewEngine: {

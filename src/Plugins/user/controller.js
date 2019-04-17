@@ -99,7 +99,6 @@ const sendMail = async (req, res) => {
   */
 
 const updateUser = async (req, res) => {
-    console.log("req.file", req.file);
     const fileObj = {
         imageLink: req.file.path
     }

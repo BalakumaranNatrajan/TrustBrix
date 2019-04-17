@@ -9,14 +9,13 @@ const { settings } = require('./src/config/config.settings');
 const protectedrouter = require('./src/Plugins');
 const SWAGGER_DOCUMENT = YAML.load('./swagger.yml');
 const router = require('./src/Plugins/auth/router');
-
-
 require('colors');
 
-app.use(boom());
-app.use(logger('tiny'));
-app.use(express.json());
 
+app.use(boom());
+// app.use(logger('tiny'));
+app.use(logger(':method :url - :referrer :status'));
+app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(SWAGGER_DOCUMENT));
