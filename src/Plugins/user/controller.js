@@ -62,7 +62,7 @@ const ForgetPassword = async (req, res) => {
 
 /**
   * @method sendMail
-  * @description sent a mail with reset password link..
+  * @description sent a mail for reset a password..
   */
 
 const sendMail = async (req, res) => {
