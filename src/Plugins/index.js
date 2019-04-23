@@ -1,7 +1,7 @@
 const glob = require('glob');
 const express = require('express');
 const ProtectedRoutes = express.Router();
-const upload = require('../lib/multer');
+const { upload } = require('../lib/multer');
 var _ = require('lodash');
 
 const { verifyToken } = require('../lib/token');
@@ -19,7 +19,7 @@ ProtectedRoutes.use(async (req, res, next) => {
         res.send({ message: "Token required" });
     }
 });
-
+console.log("dir2", __dirname);
 
 glob(`${__dirname}/*`, { ignore: ['**/auth', '**/index.js'] }, (err, matches) => {
     if (err) {

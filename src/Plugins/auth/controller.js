@@ -53,12 +53,14 @@ const LoginUser = async (req, res) => {
     if (!match) {
         res.boom.unauthorized('Invalid password');
     }
-    const token = await generateToken(user.email);
-    const data = {
-        token: token,
-        user
+    else {
+        const token = await generateToken(user.email);
+        const data = {
+            token: token,
+            user
+        }
+        res.send(handleSuccess(data));
     }
-    res.send(handleSuccess(data));
 }
 
 module.exports = { LoginUser, RegUser }

@@ -21,6 +21,8 @@ tags:
   externalDocs:
     description: "Find out more"
     url: "http://editor.swagger.io/"
+- name: "Home Page"
+  description: "Home page components and data"
 schemes:
 - "https"
 - "http"
@@ -223,45 +225,241 @@ paths:
           description: "Invalid email supplied"
         404:
           description: "User not found"
+  /api/home-components:
+    post:
+      tags:
+      - "Home Page"
+      summary: "To create a home page components"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "multipart/form-data"
+      parameters:
+      - name: "bannerImgLink"
+        in: "formData"
+        description: "The file to upload."
+        required: true
+        type: "file"
+      - name: "secondBannerImgLink"
+        in: "formData"
+        description: "The file to upload."
+        required: true
+        type: "file"
+      - name: "blockchainBannerImg"
+        in: "formData"
+        description: "The file to upload."
+        required: true
+        type: "file"
+      - name: "bannerText"
+        in: "formData"
+        description: "Banner text"
+        required: true
+        type: "string"
+      - name: "bannerTitle"
+        in: "formData"
+        description: "Banner title"
+        required: true
+        type: "string"
+      - name: "bannerDescription"
+        in: "formData"
+        description: "Banner description"
+        required: true
+        type: "string"
+      - name: "objectText"
+        in: "formData"
+        description: "Object Text"
+        required: true
+        type: "string"
+      - name: "propertyName"
+        in: "formData"
+        description: "Property name"
+        required: true
+        type: "string"
+      - name: "city"
+        in: "formData"
+        description: "city"
+        required: true
+        type: "string"
+      - name: "Efficiency"
+        in: "formData"
+        description: "Efficiency"
+        required: true
+        type: "string"
+      - name: "Participants"
+        in: "formData"
+        description: "Participants"
+        required: true
+        type: "string"
+      - name: "Completed"
+        in: "formData"
+        description: "Completed"
+        required: true
+        type: "string"
+      - name: "amount"
+        in: "formData"
+        description: "amount"
+        required: true
+        type: "string"
+      - name: "secondBannerText"
+        in: "formData"
+        description: "secondBannerText"
+        required: true
+        type: "string"
+      - name: "secondBannerTitle1"
+        in: "formData"
+        description: "secondBannerTitle1"
+        required: true
+        type: "string"
+      - name: "secondBannerTitle2"
+        in: "formData"
+        description: "secondBannerTitle2"
+        required: true
+        type: "string"
+      - name: "secondBannerTitle3"
+        in: "formData"
+        description: "secondBannerTitle3"
+        required: true
+        type: "string"
+      - name: "secondBannerTitle4"
+        in: "formData"
+        description: "city"
+        required: true
+        type: "string"
+      - name: "secondBannerDes1"
+        in: "formData"
+        description: "secondBannerDes1"
+        required: true
+        type: "string"
+      - name: "secondBannerDes2"
+        in: "formData"
+        description: "secondBannerDes2"
+        required: true
+        type: "string"
+      - name: "secondBannerDes3"
+        in: "formData"
+        description: "secondBannerDes3"
+        required: true
+        type: "string"
+      - name: "secondBannerDes4"
+        in: "formData"
+        description: "secondBannerDes4"
+        required: true
+        type: "string"
+      - name: "blockchainBanner"
+        in: "formData"
+        description: "blockchainBanner"
+        required: true
+        type: "string"
+      - name: "blockchainBannerTitle1"
+        in: "formData"
+        description: "blockchainBannerTitle1"
+        required: true
+        type: "string"
+      - name: "blockchainBannerTitle2"
+        in: "formData"
+        description: "blockchainBannerTitle2"
+        required: true
+        type: "string"
+      - name: "blockchainBannerTitle3"
+        in: "formData"
+        description: "blockchainBannerTitle3"
+        required: true
+        type: "string"
+      - name: "blockchainBannerTitle4"
+        in: "formData"
+        description: "blockchainBannerTitle4"
+        required: true
+        type: "string"
+      - name: "blockchainBannerDes1"
+        in: "formData"
+        description: "blockchainBannerDes1"
+        required: true
+        type: "string"
+      - name: "blockchainBannerDes2"
+        in: "formData"
+        description: "blockchainBannerDes2"
+        required: true
+        type: "string"
+      - name: "blockchainBannerDes3"
+        in: "formData"
+        description: "blockchainBannerDes3"
+        required: true
+        type: "string"
+      - name: "blockchainBannerDes4"
+        in: "formData"
+        description: "blockchainBannerDes4"
+        required: true
+        type: "string"
+      responses:
+        405:
+          description: "Invalid input"
+    get:
+      tags:
+      - "Home Page"
+      summary: "Get details of home page"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+  /api/partners:
+    post:
+      tags:
+      - "Home Page"
+      summary: "To create a partners"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "multipart/form-data"
+      parameters:
+      - name: "partnerTitle"
+        in: "formData"
+        description: "Partner title"
+        required: true
+        type: "string"
+      - name: "file"
+        in: "formData"
+        description: "The file to upload."
+        required: true
+        type: "file"
+      - name: "title"
+        in: "formData"
+        description: "Title"
+        required: true
+        type: "string"
+      - name: "description"
+        in: "formData"
+        description: "Description"
+        required: true
+        type: "string"
+      - name: "domainUrl"
+        in: "formData"
+        description: "Url of the partner domain"
+        required: true
+        type: "string"
+      responses:
+        405:
+          description: "Invalid input"
+    get:
+      tags:
+      - "Home Page"
+      summary: "Get details of home page"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
 definitions:
-  registration:
-    type: "object"
-    required:
-    - "file"
-    - "firstname"
-    - "lastname"
-    - "email"
-    - "password"
-    - "imageLink"
-    - "mobile"
-    - "userType"
-    properties:
-      file:
-        type: "string"
-        example: "image1.txt"
-      firstname:
-        type: "string"
-        example: "test"
-      lastname:
-        type: "string"
-        example: "test"
-      email:
-        type: "string"
-        example: "testpm@trustbrix.com"
-      password:
-        type: "string"
-        example: "test@123"
-      imageLink:
-        type: "string"
-        example: "src/images/24242342.jpeg"
-      mobile:
-        type: "number"
-        example: "9080878672"
-      userType:
-        type: "string"
-        example: "admin"
-    xml:
-      name: "Order"
   forget:
     type: "object"
     required:

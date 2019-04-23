@@ -14,8 +14,9 @@ const protectedrouter = require('./src/Plugins');
 const logger = require('./src/lib/winston');
 require('colors');
 
-
 app.use(boom());
+
+app.use(express.static(__dirname + 'public'));
 
 //Morgan configuration for loggers
 app.use(morgan(function (tokens, req, res) {
@@ -29,7 +30,7 @@ app.use(morgan(function (tokens, req, res) {
 }));
 app.use(morgan('combined', { "stream": logger.stream }));
 
-logger.info('Working dir:' + process.cwd())
+// logger.info('Working dir:' + process.cwd())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
