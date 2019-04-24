@@ -14,6 +14,8 @@ var storage = multer.diskStorage({
 //will be using this for uploading a single file
 const upload = multer({ storage: storage }).single('file');
 
+const uploadImage = multer({ storage: storage }).array('images', 12);
+
 const multiUpload = multer({ storage: storage }).fields([{ name: 'bannerImgLink', maxCount: 1 }, { name: 'secondBannerImgLink', maxCount: 8 }, { name: 'blockchainBannerImg', maxCount: 1 }])
 
-module.exports = { upload, multiUpload };
+module.exports = { upload, multiUpload, uploadImage };

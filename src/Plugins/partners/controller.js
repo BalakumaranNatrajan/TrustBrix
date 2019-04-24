@@ -34,8 +34,8 @@ const createPartner = async (req, res) => {
   */
 
 const getPartners = async (req, res) => {
-    const user = await Partners.find({});
-    res.send(handleSuccess(user));
+    const partners = await Partners.find({});
+    res.send(handleSuccess(partners));
 }
 
 module.exports = { createPartner, getPartners }

@@ -23,6 +23,8 @@ tags:
     url: "http://editor.swagger.io/"
 - name: "Home Page"
   description: "Home page components and data"
+- name: "Property"
+  description: "Operations about property"
 schemes:
 - "https"
 - "http"
@@ -457,6 +459,112 @@ paths:
           description: "successful operation"
         400:
           description: "Invalid username supplied"
+        404:
+          description: "User not found"
+  /api/property:
+    post:
+      tags:
+      - "Property"
+      summary: "To Register the new property"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "multipart/form-data"
+      parameters:
+      - name: "images"
+        in: "formData"
+        description: "To upload a property images"
+        required: true
+        type: "file"
+      - name: "propertyName"
+        in: "formData"
+        description: "Name of the property"
+        required: true
+        type: "string"
+      - name: "description"
+        in: "formData"
+        description: "Description of the property"
+        required: true
+        type: "string"
+      - name: "owner"
+        in: "formData"
+        description: "Owner of the property"
+        required: true
+        type: "string"
+      - name: "propertyType"
+        in: "formData"
+        description: "Type of the property"
+        required: true
+        type: "string"
+      - name: "address"
+        in: "formData"
+        description: "Address of the property"
+        required: true
+        type: "string"
+      - name: "city"
+        in: "formData"
+        description: "Property in the city"
+        required: true
+        type: "string"
+      - name: "surface"
+        in: "formData"
+        description: "Surface of the property"
+        required: true
+        type: "number"
+      - name: "plot"
+        in: "formData"
+        description: "Plot details"
+        required: true
+        type: "number"
+      - name: "yearConstruction"
+        in: "formData"
+        description: "Construction year"
+        required: true
+        type: "number"
+      - name: "rooms"
+        in: "formData"
+        description: "Rooms in the property"
+        required: true
+        type: "number"
+      - name: "bathrooms"
+        in: "formData"
+        description: "Bathrooms in the property"
+        required: true
+        type: "number"
+      - name: "floors"
+        in: "formData"
+        description: "Floors in the property"
+        required: true
+        type: "number"
+      - name: "coordinates"
+        in: "formData"
+        description: "coordinates in the property"
+        required: true
+        type: "array"
+        items:
+          type: "number"
+      responses:
+        405:
+          description: "Invalid input"
+  /api/property/{id}:
+    get:
+      tags:
+      - "Property"
+      summary: "Get details of propety by id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id that needs to be fetched. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid id supplied"
         404:
           description: "User not found"
 definitions:

@@ -1,15 +1,14 @@
-const test = require('./controller');
-
+const { addProperty, getPropertyById } = require('./controller');
 const config = [
     {
-        method: 'get',
+        method: 'post',
         route: '/property',
-        handler: test
+        handler: addProperty
     },
     {
         method: 'get',
-        route: '/property-details',
-        handler: test
+        route: '/property/:id',
+        handler: getPropertyById
     }
 ]
 

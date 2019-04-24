@@ -19,7 +19,6 @@ ProtectedRoutes.use(async (req, res, next) => {
         res.send({ message: "Token required" });
     }
 });
-console.log("dir2", __dirname);
 
 glob(`${__dirname}/*`, { ignore: ['**/auth', '**/index.js'] }, (err, matches) => {
     if (err) {
